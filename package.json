@@ -1,0 +1,28 @@
+{
+  "name": "asset-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otarim/asset-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/otarim/asset-manager/issues"
+  },
+  "homepage": "https://github.com/otarim/asset-manager#readme",
+  "dependencies": {
+    "mocha": "^2.4.5"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "description": ""
+}

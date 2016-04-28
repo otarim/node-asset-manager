@@ -1,0 +1,12 @@
+{
+	"css": {
+		"all": {
+			"src": ["./static/1.css", "./static/2.css"]
+		}
+	},
+	"js": {
+		"all": {
+			"src": ["./static/1.js", "./static/2.js"]
+		}
+	}
+}
