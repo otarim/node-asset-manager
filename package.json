@@ -1,5 +1,5 @@
 {
-  "name": "asset-manager",
+  "name": "node-asset-manager",
   "version": "1.0.0",
   "main": "index.js",
   "directories": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/otarim/asset-manager.git"
+    "url": "git+https://github.com/otarim/node-asset-manager.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/otarim/asset-manager/issues"
+    "url": "https://github.com/otarim/node-asset-manager/issues"
   },
-  "homepage": "https://github.com/otarim/asset-manager#readme",
+  "homepage": "https://github.com/otarim/node-asset-manager#readme",
   "dependencies": {
     "mocha": "^2.4.5"
   },

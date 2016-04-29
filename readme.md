@@ -1,4 +1,4 @@
-#asset-manager
+#node-asset-manager
 
 A Nodejs assets manager,allows you to switch between development and production, manager your css and js files in a single json
 
@@ -53,4 +53,3 @@ A Nodejs assets manager,allows you to switch between development and production,
         {% for link in asset.css('all') %}
         <link rel="stylesheet" href="{{link}}">
         {% endfor %}
-        
