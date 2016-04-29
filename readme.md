@@ -38,8 +38,8 @@ A Nodejs assets manager,allows you to switch between development and production,
 
         console.log(combocss)
 
-        // debug === true ["dest/all.[hash].css"]
-        // debug === false ["dev/1.css", "dev/2.css"]
+        // debug === false ["dest/all.[hash].css"]
+        // debug === true ["dev/1.css", "dev/2.css"]
 
 4. use in template (eg: koa-swig)
 
