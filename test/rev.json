@@ -1,12 +1,12 @@
 {
 	"css": {
 		"all": {
-			"src": ["./static/1.css", "./static/2.css"]
+			"src": ["dev/1.css", "dev/2.css"]
 		}
 	},
 	"js": {
 		"all": {
-			"src": ["./static/1.js", "./static/2.js"]
+			"src": ["dev/1.js", "dev/2.js"]
 		}
 	}
 }

@@ -24,5 +24,5 @@
   "devDependencies": {
     "mocha": "^2.4.5"
   },
-  "description": ""
+  "description": "A Nodejs assets manager,allows you to switch between development and production, manager your css and js files in a single json"
 }

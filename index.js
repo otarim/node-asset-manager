@@ -10,9 +10,9 @@ var asset = {
 }
 
 var ASSETCONFIG = {
-    dist: '',
-    debug: process.env.NODE_ENV === 'production' ? false : true,
-    rev: null
+    dist: 'dist',
+    hashLength: 5,
+    debug: process.env.NODE_ENV === 'production' ? false : true
 }
 
 var getRevFile = (function() {
@@ -34,12 +34,17 @@ var getRevFile = (function() {
     }
 })()
 
+function resolveFile(file) {
+    // console.log(path.resolve(ASSETCONFIG.publicPath))
+    return path.join(ASSETCONFIG.publicPath, file)
+}
+
 
 function getEntry(rev, type) {
     // 压缩，合并
     var content = rev.map(function(file) {
         // file = prefix + file
-        return fs.readFileSync(file).toString()
+        return fs.readFileSync(resolveFile(file)).toString()
     })
     if (type === 'js') {
         content = UglifyJS.minify(content, {
@@ -56,7 +61,7 @@ function getEntry(rev, type) {
 function getHash(rev) {
     return md5(rev.map(function(file) {
         // file = prefix + file
-        return md5(fs.readFileSync(file))
+        return md5(fs.readFileSync(resolveFile(file)))
     }).join(''))
 }
 
@@ -64,16 +69,36 @@ function md5(str) {
     return crypto.createHash('md5').update(str, 'utf8').digest('hex')
 }
 
-function updateFilename(filename, hash, type) {
-    return ASSETCONFIG.dist + '/' + filename + '.' + hash + '.' + type
+function genFile(name, content) {
+    var dist = path.join(ASSETCONFIG.publicPath, ASSETCONFIG.dist)
+    if (!fs.existsSync(dist)) {
+        fs.mkdirSync(dist)
+    }
+    fs.writeFileSync(path.join(dist, name), content)
 }
 
-function genFile(name, content) {
-    if (!fs.existsSync(ASSETCONFIG.dist)) {
-        fs.mkdirSync(ASSETCONFIG.dist)
+function _getFileHander(name, type) {
+    if (ASSETCONFIG.debug) {
+        return ASSETCONFIG.rev[type][name].src
+    } else {
+        return [asset[type][name]]
     }
-    fs.writeFileSync(name, content)
 }
+
+var assetFile = (function() {
+    var process = function(name, type) {
+        var tmp = getRevFile(name, type),
+            filename = [name, getHash(tmp).substr(0, ASSETCONFIG.hashLength), type].join('.')
+            // console.log(getHash(tmp))
+        asset[type][name] = ASSETCONFIG.dist + '/' + filename
+        genFile(filename, getEntry(tmp, type))
+    }
+    return function(files, type) {
+        Object.keys(files).forEach(function(i) {
+            process(i, type)
+        })
+    }
+})()
 
 var assets = module.exports = {
     css: function(name) {
@@ -84,42 +109,18 @@ var assets = module.exports = {
     }
 }
 
-var _getFileHander = function(name, type) {
-    if (ASSETCONFIG.debug) {
-        return ASSETCONFIG.rev[type][name].src
-    } else {
-        return [asset[type][name]]
-    }
-}
-
-var assetFile = (function() {
-    var process = function(name, type) {
-        var tmp = getRevFile(name, type)
-            // console.log(getHash(tmp))
-        file = updateFilename(name, getHash(tmp).substr(0, 8), type)
-            // 生成文件
-            // asset[type][name] = '/' + file.replace(prefix, '')
-        asset[type][name] = file
-        var content = getEntry(tmp, type)
-        genFile(file, content)
-    }
-    return function(files, type) {
-        for (var i in files) {
-            process(i, type)
-        }
-    }
-})()
-
 Object.defineProperty(assets, 'config', {
     writable: false,
     configurable: false,
     enumerable: false,
     value: function(obj) {
         Object.assign(ASSETCONFIG, obj)
+        ASSETCONFIG.staticPathName = path.basename(obj.publicPath)
+        ASSETCONFIG.rev = JSON.parse(fs.readFileSync(ASSETCONFIG.rev))
         if (!ASSETCONFIG.debug) {
-            for (var i in ASSETCONFIG.rev) {
+            Object.keys(ASSETCONFIG.rev).forEach(function(i) {
                 assetFile(ASSETCONFIG.rev[i], i)
-            }
+            })
         }
     }
 })
