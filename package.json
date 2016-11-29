@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/otarim/node-asset-manager#readme",
   "dependencies": {
-    "mocha": "^2.4.5"
+    "clean-css": "^3.4.21",
+    "uglify-js": "^2.7.4"
   },
   "devDependencies": {
     "mocha": "^2.4.5"
